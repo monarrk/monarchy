@@ -1,0 +1,10 @@
+#[package]
+#name = "monarchy"
+#version = "0.1.0"
+#authors = ["Skye Bleed <monarrk@aaathats3as.com>"]
+#edition = "2018"
+
+[workspace]
+members = [
+	"zerozerozero"
+]
