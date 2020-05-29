@@ -10,10 +10,10 @@ use std::f64::consts::PI;
 
 /// Convert the midi note's pitch into the equivalent frequency.
 ///
-/// This function assumes A4 is 440hz.
+/// This function assumes A4 is 55.00hz (2 octaves lower than usual)
 fn midi_pitch_to_freq(pitch: u8) -> f64 {
     const A4_PITCH: i8 = 69;
-    const A4_FREQ: f64 = 440.0;
+    const A4_FREQ: f64 = 55.00;
 
     // Midi notes can be 0-127
     ((f64::from(pitch as i8 - A4_PITCH)) / 12.).exp2() * A4_FREQ
@@ -111,16 +111,17 @@ impl Plugin for SineSynth {
         let output_count = outputs.len();
         let per_sample = self.time_per_sample();
         let mut output_sample;
+
         for sample_idx in 0..samples {
             let time = self.time;
             let note_duration = self.note_duration;
             if let Some(current_note) = self.note {
                 // Generate a square wave
-                let phaser = (2.0 * std::f64::consts::PI * midi_pitch_to_freq(current_note) * time).cos();
+                let phaser = (2.0 * std::f64::consts::PI * midi_pitch_to_freq(current_note) * time).sin();
                 let signal = if phaser > 0.5 { -1 } else { 1 } as f64;
 
                 // Apply a quick envelope to the attack of the signal to avoid popping.
-                let attack = 0.2;
+                let attack = 0.1;
                 let alpha = if note_duration < attack { note_duration / attack } else { 1.0 };
 
                 output_sample = (signal * alpha) as f32;
@@ -130,6 +131,7 @@ impl Plugin for SineSynth {
             } else {
                 output_sample = 0.0;
             }
+
             for buf_idx in 0..output_count {
                 let buff = outputs.get_mut(buf_idx);
                 buff[sample_idx] = output_sample;
