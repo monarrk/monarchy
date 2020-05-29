@@ -10,10 +10,10 @@ use std::f64::consts::PI;
 
 /// Convert the midi note's pitch into the equivalent frequency.
 ///
-/// This function assumes A4 is 55.00hz (2 octaves lower than usual)
+/// This function assumes A4 is 110.00hz (2 octaves lower than usual)
 fn midi_pitch_to_freq(pitch: u8) -> f64 {
     const A4_PITCH: i8 = 69;
-    const A4_FREQ: f64 = 55.00;
+    const A4_FREQ: f64 = 110.00;
 
     // Midi notes can be 0-127
     ((f64::from(pitch as i8 - A4_PITCH)) / 12.).exp2() * A4_FREQ
