@@ -1,3 +1,6 @@
+# IMPORTANT: NOW ON GITLAB
+[please see here](https://gitlab.com/monarrk/monarchy)
+
 # Monarchy
 Free and open source VST plugins and instruments
 
